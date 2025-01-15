@@ -26,8 +26,12 @@ class UserCreateView(CreateView):
         user.save()
         host = self.request.get_host()
         url = f"http://{host}/users/email-confirm/{token}"
-        send_mail(subject="Confirm your email", message=f"Hi! Click the link to confirm your email: {url}",
-            from_email=EMAIL_HOST_USER, recipient_list=[user.email], )
+        send_mail(
+            subject="Confirm your email",
+            message=f"Hi! Click the link to confirm your email: {url}",
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[user.email],
+        )
         return super().form_valid(form)
 
 
@@ -39,21 +43,30 @@ def email_verification(request, token):
 
 
 def reset_password(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PasswordResetForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data["email"]
             try:
                 user = User.objects.get(email=email)
                 new_password = get_random_string(length=8)
                 user.set_password(new_password)
                 user.save()
-                send_mail('Ваш новый пароль', f'Ваш новый пароль: {new_password}', 'EMAIL_HOST_USER', [email],
-                    fail_silently=False, )
-                messages.success(request, 'Новый пароль отправлен на вашу электронную почту.')
+                send_mail(
+                    "Ваш новый пароль",
+                    f"Ваш новый пароль: {new_password}",
+                    "EMAIL_HOST_USER",
+                    [email],
+                    fail_silently=False,
+                )
+                messages.success(
+                    request, "Новый пароль отправлен на вашу электронную почту."
+                )
                 return redirect(reverse("users:login"))
             except User.DoesNotExist:
-                messages.error(request, 'Пользователь с таким адресом электронной почты не найден.')
+                messages.error(
+                    request, "Пользователь с таким адресом электронной почты не найден."
+                )
     else:
         form = PasswordResetForm()
-    return render(request, 'users/reset_password.html', {'form': form})
+    return render(request, "users/reset_password.html", {"form": form})

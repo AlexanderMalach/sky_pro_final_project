@@ -1,0 +1,28 @@
+{% extends 'diary/base.html'%}
+{% load my_tags %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            {% if object.image %}
+              <img src="{{ entry.image | media_filter }}">
+            {% endif %}
+            <div class="card-body">
+              <p class="card-text">Заголовок: {{ object.title }}</p>
+              <p class="card-text">Содержание: {{ object.content }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a class="btn btn-outline-primary" href="{% url 'diary:entry_list' %}" role="button">Назад</a>
+                </div>
+                <small class="text-body-secondary">Дата создания записи: {{ object.created_at }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
