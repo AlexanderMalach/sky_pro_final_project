@@ -13,7 +13,7 @@
 1. Клонируйте репозиторий:
 
    ```bash
-   git clone https://github.com/AlexanderMalach/docker_hw.git
+   git clone https://github.com/AlexanderMalach/sky_pro_final_project.git
    cd diary
    ```
 
@@ -64,7 +64,7 @@
 
 - Django 4.2+
 - Bootstrap 5
-- SQLite (по умолчанию)
+- PostgreSQL
 
 ## Вклад в проект
 
