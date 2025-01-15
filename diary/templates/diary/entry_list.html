@@ -7,9 +7,8 @@
       <!-- Форма поиска -->
       <div class="row mb-3">
         <div class="col-md-6 mx-auto">
-          <form method="get" action="" class="d-flex">
-            <input type="text" name="q" class="form-control me-2" placeholder="Поиск..." value="{{ request.GET.q }}">
-            <button type="submit" class="btn btn-primary">Поиск</button>
+          <form method="get" action="" class="d-flex" id="search-form">
+            <input type="text" name="q" class="form-control me-2" placeholder="Поиск..." value="{{ request.GET.q }}" id="search-input">
           </form>
         </div>
       </div>
@@ -42,4 +41,16 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Получаем ссылку на поле ввода
+    const searchInput = document.getElementById("search-input");
+    const searchForm = document.getElementById("search-form");
+
+    // Слушаем событие на ввод текста
+    searchInput.addEventListener("input", function() {
+        // Отправляем форму с введённым текстом
+        searchForm.submit();
+    });
+  </script>
 {% endblock %}
