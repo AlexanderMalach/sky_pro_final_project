@@ -4,11 +4,14 @@
 {% block content %}
   <div class="album py-5 bg-body-tertiary">
     <div class="container">
+      <!-- Заголовок страницы -->
+      <h1 class="text-center mb-4">Мои записи</h1>
+
       <!-- Форма поиска -->
       <div class="row mb-3">
         <div class="col-md-6 mx-auto">
-          <form method="get" action="" class="d-flex" id="search-form">
-            <input type="text" name="q" class="form-control me-2" placeholder="Поиск..." value="{{ request.GET.q }}" id="search-input">
+          <form method="get" action="" class="d-flex shadow-sm" id="search-form">
+            <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Поиск..." value="{{ request.GET.q }}" id="search-input">
           </form>
         </div>
       </div>
@@ -17,27 +20,57 @@
         {% if user.is_authenticated %}
           {% for diary_entry in object_list %}
             <div class="col">
-              <div class="card shadow-sm">
+              <div class="card shadow-sm rounded-3">
                 {% if diary_entry.image %}
                   <img src="{{ diary_entry.image | media_filter }}" style="width: 150px; height: 150px; object-fit: cover;">
                 {% else %}
-                  Нет картинки <img style="width: 125px; height: 125px; object-fit: cover;">
+                   Нет картинки <img style="width: 150px; height: 150px; object-fit: cover;">
                 {% endif %}
                 <div class="card-body">
                   <p class="card-text">Заголовок записи: {{ diary_entry.title }}</p>
+                  <p class="card-text">Создано: {{ diary_entry.created_at }}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a class="btn btn-outline-primary" href="{% url 'diary:entry_detail' diary_entry.pk %}" role="button">Посмотреть</a>
-                      <a class="btn btn-outline-primary" href="{% url 'diary:entry_update' diary_entry.pk %}" role="button">Редактировать</a>
-                      <a class="btn btn-outline-primary" href="{% url 'diary:entry_delete' diary_entry.pk %}" role="button">Удалить</a>
+                      <a class="btn btn-primary btn-sm" href="{% url 'diary:entry_detail' diary_entry.pk %}" role="button">
+                          <i class="bi bi-eye"></i> Посмотреть
+                      </a>
+                      <a class="btn btn-warning btn-sm" href="{% url 'diary:entry_update' diary_entry.pk %}" role="button">
+                          <i class="bi bi-pencil"></i> Редактировать
+                      </a>
+                      <a class="btn btn-danger btn-sm" href="{% url 'diary:entry_delete' diary_entry.pk %}" role="button">
+                          <i class="bi bi-trash"></i> Удалить
+                      </a>
                     </div>
                   </div>
-                  <small class="text-body-secondary">Дата создания: {{ diary_entry.created_at }}</small>
+                  <small class="text-body-secondary">Обновлено: {{ diary_entry.updated_at }}</small>
                 </div>
               </div>
             </div>
           {% endfor %}
         {% endif %}
+      </div>
+
+      <!-- Пагинация -->
+      <div class="d-flex justify-content-center mt-4">
+        <nav>
+          <ul class="pagination">
+            {% if object_list.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ object_list.previous_page_number }}&q={{ request.GET.q }}">Предыдущая</a>
+              </li>
+            {% endif %}
+            {% for num in object_list.paginator.page_range %}
+              <li class="page-item {% if num == object_list.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
+              </li>
+            {% endfor %}
+            {% if object_list.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ object_list.next_page_number }}&q={{ request.GET.q }}">Следующая</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
@@ -53,4 +86,19 @@
         searchForm.submit();
     });
   </script>
+
+  <style>
+    .card:hover {
+      transform: scale(1.02);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    #search-input:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+    }
+  </style>
 {% endblock %}
+
+
+
