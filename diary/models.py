@@ -16,7 +16,9 @@ class Entry(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Автор", related_name="entries"
     )
-    view_counter = models.PositiveIntegerField(verbose_name="Cчётчик просмотров", default=0)
+    view_counter = models.PositiveIntegerField(
+        verbose_name="Cчётчик просмотров", default=0
+    )
 
     class Meta:
         verbose_name = "Запись"

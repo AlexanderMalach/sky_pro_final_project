@@ -1,3 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q
+from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
     DetailView,
@@ -5,20 +8,20 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
 
 from diary.forms import EntryForm
 from diary.models import Entry
-from django.db.models import Q
+
 
 class EntryListView(ListView, LoginRequiredMixin, PermissionRequiredMixin):
     model = Entry
-    template_name = 'diary/entry_list.html'  # Укажите путь к вашему шаблону
+    template_name = "diary/entry_list.html"  # Укажите путь к вашему шаблону
 
     def get_queryset(self):
-        queryset = Entry.objects.filter(author=self.request.user)
+        if self.request.user.is_authenticated:
+            queryset = Entry.objects.filter(author=self.request.user)
+        else:
+            queryset = Entry.objects.none()  # Пустой запрос для анонимных пользователей
 
         query = self.request.GET.get("q", "")
         if query:
@@ -46,7 +49,7 @@ class EntryDetailView(DetailView, LoginRequiredMixin, PermissionRequiredMixin):
 class EntryCreateView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     model = Entry
     form_class = EntryForm
-    success_url = reverse_lazy('diary:entry_list')
+    success_url = reverse_lazy("diary:entry_list")
 
     def form_valid(self, form):
         # Сохраняем объект, но не записываем в базу
@@ -61,7 +64,7 @@ class EntryCreateView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 class EntryUpdateView(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
     model = Entry
     form_class = EntryForm
-    success_url = reverse_lazy('diary:entry_list')
+    success_url = reverse_lazy("diary:entry_list")
 
     def get_success_url(self):
         return reverse_lazy("diary:entry_detail", args=[self.kwargs.get("pk")])
@@ -73,9 +76,8 @@ class EntryUpdateView(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
 
 class EntryDeleteView(DeleteView, LoginRequiredMixin, PermissionRequiredMixin):
     model = Entry
-    success_url = reverse_lazy('diary:entry_list')
+    success_url = reverse_lazy("diary:entry_list")
 
     def get_queryset(self):
         # Ограничиваем удаление только для автора записи
         return Entry.objects.filter(author=self.request.user)
-

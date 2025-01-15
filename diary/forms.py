@@ -18,5 +18,5 @@ class StyleFormMixin(forms.Form):
 class EntryForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Entry
-        exclude = ['view_counter', 'created_at', 'author']
+        exclude = ["view_counter", "created_at", "author"]
         # fields = ('title', 'content', 'image', 'author',)
