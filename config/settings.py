@@ -129,3 +129,7 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", False) == "True"
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", False) == "True"
+
+LOGIN_URL = '/accounts/login/'  # URL для перенаправления неаутентифицированных пользователей
+LOGIN_REDIRECT_URL = '/'       # URL для перенаправления после успешного входа
+LOGOUT_REDIRECT_URL = '/'      # URL для перенаправления после выхода

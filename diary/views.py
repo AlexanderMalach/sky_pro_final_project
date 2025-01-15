@@ -13,7 +13,7 @@ from diary.forms import EntryForm
 from diary.models import Entry
 
 
-class EntryListView(ListView, LoginRequiredMixin, PermissionRequiredMixin):
+class EntryListView(LoginRequiredMixin, ListView):
     model = Entry
     template_name = "diary/entry_list.html"  # Укажите путь к вашему шаблону
 
@@ -32,7 +32,7 @@ class EntryListView(ListView, LoginRequiredMixin, PermissionRequiredMixin):
         return queryset
 
 
-class EntryDetailView(DetailView, LoginRequiredMixin, PermissionRequiredMixin):
+class EntryDetailView(LoginRequiredMixin, DetailView):
     model = Entry
 
     def get_object(self, queryset=None):
@@ -46,7 +46,7 @@ class EntryDetailView(DetailView, LoginRequiredMixin, PermissionRequiredMixin):
         return Entry.objects.filter(author=self.request.user)
 
 
-class EntryCreateView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+class EntryCreateView(LoginRequiredMixin, CreateView):
     model = Entry
     form_class = EntryForm
     success_url = reverse_lazy("diary:entry_list")
@@ -61,7 +61,7 @@ class EntryCreateView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         return super().form_valid(form)
 
 
-class EntryUpdateView(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
+class EntryUpdateView(LoginRequiredMixin, UpdateView):
     model = Entry
     form_class = EntryForm
     success_url = reverse_lazy("diary:entry_list")
@@ -74,7 +74,7 @@ class EntryUpdateView(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
         return Entry.objects.filter(author=self.request.user)
 
 
-class EntryDeleteView(DeleteView, LoginRequiredMixin, PermissionRequiredMixin):
+class EntryDeleteView(LoginRequiredMixin, DeleteView):
     model = Entry
     success_url = reverse_lazy("diary:entry_list")
 
