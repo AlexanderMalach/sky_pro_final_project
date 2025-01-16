@@ -133,3 +133,7 @@ EMAIL_USE_SSL = config("EMAIL_USE_SSL", False) == "True"
 LOGIN_URL = '/accounts/login/'  # URL для перенаправления неаутентифицированных пользователей
 LOGIN_REDIRECT_URL = '/'       # URL для перенаправления после успешного входа
 LOGOUT_REDIRECT_URL = '/'      # URL для перенаправления после выхода
+
+# Настройка почтового backend для тестирования
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+

@@ -11,25 +11,31 @@ from django.views.generic import (
 
 from diary.forms import EntryForm
 from diary.models import Entry
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 class EntryListView(LoginRequiredMixin, ListView):
     model = Entry
-    template_name = "diary/entry_list.html"  # Укажите путь к вашему шаблону
+    template_name = "diary/entry_list.html"  # Основной шаблон
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
             queryset = Entry.objects.filter(author=self.request.user)
         else:
-            queryset = Entry.objects.none()  # Пустой запрос для анонимных пользователей
+            queryset = Entry.objects.none()
 
         query = self.request.GET.get("q", "")
         if query:
             queryset = queryset.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
             )
-
         return queryset
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return super().render_to_response(context, content_type="text/html")
+        return super().render_to_response(context, **response_kwargs)
 
 
 class EntryDetailView(LoginRequiredMixin, DetailView):

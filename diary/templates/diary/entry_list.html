@@ -16,6 +16,7 @@
         </div>
       </div>
 
+      <!-- Контейнер для списка записей -->
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% if user.is_authenticated %}
           {% for diary_entry in object_list %}
@@ -24,7 +25,7 @@
                 {% if diary_entry.image %}
                   <img src="{{ diary_entry.image | media_filter }}" style="width: 150px; height: 150px; object-fit: cover;">
                 {% else %}
-                   Нет картинки <img style="width: 150px; height: 150px; object-fit: cover;">
+                  Нет картинки <img style="width: 150px; height: 150px; object-fit: cover;">
                 {% endif %}
                 <div class="card-body">
                   <p class="card-text">Заголовок записи: {{ diary_entry.title }}</p>
@@ -75,15 +76,35 @@
     </div>
   </div>
 
+  <!-- JavaScript для AJAX-поиска -->
   <script>
-    // Получаем ссылку на поле ввода
-    const searchInput = document.getElementById("search-input");
-    const searchForm = document.getElementById("search-form");
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("search-input");
+      const searchForm = document.getElementById("search-form");
+      const resultsContainer = document.querySelector(".row.row-cols-1");
+      let timeout = null;
 
-    // Слушаем событие на ввод текста
-    searchInput.addEventListener("input", function() {
-        // Отправляем форму с введённым текстом
-        searchForm.submit();
+      searchInput.addEventListener("input", function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          const query = searchInput.value;
+
+          fetch(`${searchForm.action}?q=${encodeURIComponent(query)}`, {
+            method: "GET",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          })
+            .then((response) => response.text())
+            .then((html) => {
+              const parser = new DOMParser();
+              const newDoc = parser.parseFromString(html, "text/html");
+              const newContent = newDoc.querySelector(".row.row-cols-1");
+              resultsContainer.innerHTML = newContent.innerHTML;
+            })
+            .catch((error) => console.error("Ошибка:", error));
+        }, 300);
+      });
     });
   </script>
 
@@ -99,6 +120,3 @@
     }
   </style>
 {% endblock %}
-
-
-
