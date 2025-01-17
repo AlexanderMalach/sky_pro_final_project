@@ -9,7 +9,8 @@
                 <div class="card shadow-lg border-0 d-flex flex-column" style="background-color: rgba(255, 255, 255, 0.8);">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ object.title }}</h5>
-                        <p class="card-text">{{ object.content }}</p>
+                        <!-- Применение фильтра |safe для корректного отображения HTML -->
+                        <p class="card-text">{{ object.content|safe }}</p>
                         <small class="text-body-secondary mt-2 d-block text-center">Создано: {{ object.created_at }}</small>
                     </div>
                     <div class="card-footer d-flex flex-column">
@@ -48,27 +49,35 @@
 </div>
 
 <script>
-    const image = document.getElementById('image-to-move');
-    const zoomSlider = document.getElementById('zoom-slider');
-    const xSlider = document.getElementById('x-slider');
-    const ySlider = document.getElementById('y-slider');
+    document.addEventListener("DOMContentLoaded", function() {
+        const image = document.getElementById('image-to-move');
+        const zoomSlider = document.getElementById('zoom-slider');
+        const xSlider = document.getElementById('x-slider');
+        const ySlider = document.getElementById('y-slider');
 
-    // Масштабирование изображения
-    zoomSlider.addEventListener('input', function () {
-        const scale = zoomSlider.value;
-        image.style.transform = `scale(${scale})`;
-    });
+        // Проверка на существование элемента
+        if (image && zoomSlider && xSlider && ySlider) {
+            // Масштабирование изображения
+            zoomSlider.addEventListener('input', function () {
+                const scale = zoomSlider.value;
+                image.style.transform = `scale(${scale})`;
+            });
 
-    // Перемещение изображения по горизонтали
-    xSlider.addEventListener('input', function () {
-        const xOffset = xSlider.value;
-        image.style.left = `${xOffset}px`;
-    });
+            // Перемещение изображения по горизонтали
+            xSlider.addEventListener('input', function () {
+                const xOffset = xSlider.value;
+                image.style.left = `${xOffset}px`;
+            });
 
-    // Перемещение изображения по вертикали
-    ySlider.addEventListener('input', function () {
-        const yOffset = ySlider.value;
-        image.style.top = `${yOffset}px`;
+            // Перемещение изображения по вертикали
+            ySlider.addEventListener('input', function () {
+                const yOffset = ySlider.value;
+                image.style.top = `${yOffset}px`;
+            });
+        } else {
+            console.warn("Один или несколько элементов не были найдены.");
+        }
     });
 </script>
+
 {% endblock %}

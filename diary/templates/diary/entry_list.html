@@ -1,111 +1,128 @@
 {% extends 'diary/base.html' %}
 {% load my_tags %}
 {% load static %}
+
 {% block content %}
-  <div class="album py-5 bg-body-tertiary">
+<div class="album py-5 bg-body-tertiary">
     <div class="container">
-      <!-- Заголовок страницы -->
-      <h1 class="text-center mb-4">Мои записи</h1>
+        <!-- Заголовок страницы -->
+        <h1 class="text-center mb-4">Мои записи</h1>
 
-      <!-- Форма поиска -->
-      <div class="row mb-3">
-        <div class="col-md-6 mx-auto">
-          <form method="get" action="" class="d-flex shadow-sm" id="search-form">
-            <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Поиск..." value="{{ request.GET.q }}" id="search-input">
-          </form>
-        </div>
-      </div>
-
-      <!-- Контейнер для списка записей -->
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {% if user.is_authenticated %}
-          {% for diary_entry in object_list %}
-            <div class="col">
-              <div class="card shadow-sm rounded-3">
-                {% if diary_entry.image %}
-                  <img src="{{ diary_entry.image | media_filter }}" class="card-img-top full-card-image">
-                {% else %}
-                  <img src="{% static 'images/default_image.jpg' %}" alt="No image" class="card-img-top full-card-image">
-                {% endif %}
-                <div class="card-body">
-                  <p class="card-text">Заголовок записи: {{ diary_entry.title }}</p>
-                  <p class="card-text">Создано: {{ diary_entry.created_at }}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <a class="btn btn-primary btn-sm" href="{% url 'diary:entry_detail' diary_entry.pk %}" role="button">
-                          <i class="bi bi-eye"></i> Посмотреть
-                      </a>
-                      <a class="btn btn-warning btn-sm" href="{% url 'diary:entry_update' diary_entry.pk %}" role="button">
-                          <i class="bi bi-pencil"></i> Редактировать
-                      </a>
-                      <a class="btn btn-danger btn-sm" href="{% url 'diary:entry_delete' diary_entry.pk %}" role="button">
-                          <i class="bi bi-trash"></i> Удалить
-                      </a>
-                    </div>
-                  </div>
-                  <small class="text-body-secondary">Обновлено: {{ diary_entry.updated_at }}</small>
-                </div>
-              </div>
+        <!-- Форма поиска -->
+        <div class="row mb-3">
+            <div class="col-md-6 mx-auto">
+                <form id="search-form" class="d-flex shadow-sm" method="get" action="">
+                    <input type="text" name="q" class="form-control shadow-sm me-2" placeholder="Поиск..." value="{{ request.GET.q }}" id="search-input">
+                </form>
             </div>
-          {% endfor %}
-        {% endif %}
-      </div>
+        </div>
 
-      <!-- Пагинация -->
-      <div class="d-flex justify-content-center mt-4">
-        <nav>
-          <ul class="pagination">
-            {% if object_list.has_previous %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ object_list.previous_page_number }}&q={{ request.GET.q }}">Предыдущая</a>
-              </li>
+        <!-- Контейнер для списка записей -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="entries-container">
+            {% if user.is_authenticated %}
+                {% for diary_entry in object_list %}
+                    <div class="col">
+                        <div class="card shadow-sm rounded-3">
+                            {% if diary_entry.image %}
+                                <img src="{{ diary_entry.image | media_filter }}" class="card-img-top full-card-image">
+                            {% else %}
+                                <img src="{% static 'images/default_image.jpg' %}" alt="No image" class="card-img-top full-card-image">
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">Заголовок записи: {{ diary_entry.title|slice:":20" }}{% if diary_entry.title|length > 20 %}...{% endif %}</p>
+                                <p class="card-text">Создано: {{ diary_entry.created_at }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary btn-sm" href="{% url 'diary:entry_detail' diary_entry.pk %}" role="button">
+                                            <i class="bi bi-eye"></i> Посмотреть
+                                        </a>
+                                        <a class="btn btn-warning btn-sm" href="{% url 'diary:entry_update' diary_entry.pk %}" role="button">
+                                            <i class="bi bi-pencil"></i> Редактировать
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="{% url 'diary:entry_delete' diary_entry.pk %}" role="button">
+                                            <i class="bi bi-trash"></i> Удалить
+                                        </a>
+                                    </div>
+                                </div>
+                                <small class="text-body-secondary">Обновлено: {{ diary_entry.updated_at }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             {% endif %}
-            {% for num in object_list.paginator.page_range %}
-              <li class="page-item {% if num == object_list.number %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
-              </li>
-            {% endfor %}
-            {% if object_list.has_next %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ object_list.next_page_number }}&q={{ request.GET.q }}">Следующая</a>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
+        </div>
+
+        <!-- Пагинация -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul class="pagination">
+                    {% if object_list.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ object_list.previous_page_number }}&q={{ request.GET.q }}">Предыдущая</a>
+                        </li>
+                    {% endif %}
+                    {% for num in object_list.paginator.page_range %}
+                        <li class="page-item {% if num == object_list.number %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if object_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ object_list.next_page_number }}&q={{ request.GET.q }}">Следующая</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
-  </div>
-
-  <!-- JavaScript для AJAX-поиска -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const searchInput = document.getElementById("search-input");
-      const searchForm = document.getElementById("search-form");
-      const resultsContainer = document.querySelector(".row.row-cols-1");
-      let timeout = null;
-
-      searchInput.addEventListener("input", function () {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          const query = searchInput.value;
-
-          fetch(`${searchForm.action}?q=${encodeURIComponent(query)}`, {
-            method: "GET",
-            headers: {
-              "X-Requested-With": "XMLHttpRequest",
-            },
-          })
-            .then((response) => response.text())
-            .then((html) => {
-              const parser = new DOMParser();
-              const newDoc = parser.parseFromString(html, "text/html");
-              const newContent = newDoc.querySelector(".row.row-cols-1");
-              resultsContainer.innerHTML = newContent.innerHTML;
-            })
-            .catch((error) => console.error("Ошибка:", error));
-        }, 300);
-      });
-    });
-  </script>
+</div>
 
 {% endblock %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("search-input");
+        const entriesContainer = document.getElementById("entries-container");
+
+        let timeout = null;
+
+        // Слушаем изменения в поле ввода
+        searchInput.addEventListener("input", function() {
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+                const query = searchInput.value;
+
+                // Отправляем AJAX-запрос
+                fetch("{% url 'diary:entry_list' %}?q=" + encodeURIComponent(query), {
+                    method: "GET",
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Создаём новый DOM с полученным HTML
+                    const parser = new DOMParser();
+                    const newDoc = parser.parseFromString(html, "text/html");
+
+                    // Обновляем контейнер с записями
+                    const newContent = newDoc.querySelector("#entries-container");
+                    entriesContainer.innerHTML = newContent.innerHTML;
+                })
+                .catch(error => console.error("Ошибка:", error));
+            }, 300); // Задержка в 300 мс
+        });
+    });
+</script>
+
+<style>
+    .card:hover {
+        transform: scale(1.02);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    #search-input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+    }
+</style>
