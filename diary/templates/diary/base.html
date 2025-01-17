@@ -20,87 +20,336 @@
 
       <!-- Favicons -->
 
-  <meta name="theme-color" content="#712cf9">
+        <meta name="theme-color" content="#712cf9">
+
+        {% block head %}
+  <!-- Скрипт TinyMCE с вашим API-ключом -->
+  <script src="https://cdn.tiny.cloud/1/80ofg8nn67pfl51rtodg1i7pmaappzddremjumg2708j31lj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
 
 
-      <style>
-        .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
-        }
 
-        @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-          }
-        }
 
-        .b-example-divider {
-          width: 100%;
-          height: 3rem;
-          background-color: rgba(0, 0, 0, .1);
-          border: solid rgba(0, 0, 0, .15);
-          border-width: 1px 0;
-          box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
+<style>
 
-        .b-example-vr {
-          flex-shrink: 0;
-          width: 1.5rem;
-          height: 100vh;
-        }
 
-        .bi {
-          vertical-align: -.125em;
-          fill: currentColor;
-        }
+/* Стили для изображений, которые не обрезаются и уменьшаются в масштабе */
+.full-card-image {
+    width: 100%;  /* Задаем 100% ширины для изображения */
+    height: 200px;  /* Фиксированная высота (можно подстроить под ваши нужды) */
+    object-fit: contain;  /* Изображение будет уменьшаться, чтобы полностью поместиться в контейнер */
+    background-color: #f0f0f0;  /* Цвет фона на случай, если изображение не покроет весь контейнер */
+}
 
-        .nav-scroller {
-          position: relative;
-          z-index: 2;
-          height: 2.75rem;
-          overflow-y: hidden;
-        }
 
-        .nav-scroller .nav {
-          display: flex;
-          flex-wrap: nowrap;
-          padding-bottom: 1rem;
-          margin-top: -1px;
-          overflow-x: auto;
-          text-align: center;
-          white-space: nowrap;
-          -webkit-overflow-scrolling: touch;
-        }
 
-        .btn-bd-primary {
-          --bd-violet-bg: #712cf9;
-          --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
 
-          --bs-btn-font-weight: 600;
-          --bs-btn-color: var(--bs-white);
-          --bs-btn-bg: var(--bd-violet-bg);
-          --bs-btn-border-color: var(--bd-violet-bg);
-          --bs-btn-hover-color: var(--bs-white);
-          --bs-btn-hover-bg: #6528e0;
-          --bs-btn-hover-border-color: #6528e0;
-          --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-          --bs-btn-active-color: var(--bs-btn-hover-color);
-          --bs-btn-active-bg: #5a23c8;
-          --bs-btn-active-border-color: #5a23c8;
-        }
 
-        .bd-mode-toggle {
-          z-index: 1500;
-        }
 
-        .bd-mode-toggle .dropdown-menu .active .bi {
-          display: block !important;
-        }
-      </style>
+
+    .card-body /* Стиль для контейнера кнопок */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  /* Центрируем кнопки внутри контейнера */
+    gap: 0px;  /* Добавляем промежутки между кнопками */
+    width: 100%;
+}
+    /* Стили кнопок */
+.btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+}
+     /* Обновляем стили шрифта */
+.btn {
+    font-family: 'Arial', sans-serif !important;  /* Простой шрифт */
+    font-size: 15px !important;
+    text-transform: none !important;  /* Убираем заглавные буквы, если это необходимо */
+    align-items: center !important; /* Вертикальное выравнивание по центру */
+    padding: 10px 10px !important; /* Корректируем отступы для кнопок */
+    display: inline-flex !important; /* Используем flexbox для вертикального выравнивания */
+    align-items: center !important; /* Вертикальное выравнивание по центру */
+    justify-content: center !important; /* Горизонтальное выравнивание по центру */
+    line-height: 1 !important; /* Устанавливаем line-height для правильного вертикального выравнивания */
+
+
+}
+
+/* Основные стили для кнопок */
+.btn-outline-primary {
+    font-size: 18px !important;  /* Увеличиваем размер шрифта */
+    padding: 12px 24px !important;  /* Увеличиваем отступы для большей кнопки */
+    background-color: white !important;  /* Белый фон */
+    color: black !important;  /* Цвет текста */
+    border: 2px solid black !important;  /* Черная граница */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;  /* Центрируем текст по горизонтали и вертикали */
+    text-align: center !important;
+    border-radius: 4px !important;  /* Скругленные углы */
+    transition: all 0.3s ease-in-out !important;  /* Плавный переход */
+
+}
+
+.btn-outline-primary:hover {
+    background-color: black !important;  /* Черный фон при наведении */
+    color: white !important;  /* Белый текст при наведении */
+    border-color: white !important;  /* Белая граница при наведении */
+    transform: scale(1.05) !important;  /* Легкое увеличение при наведении */
+}
+
+
+/* Стили для основной кнопки */
+.btn-primary {
+    font-size: 1.2rem; /* Размер шрифта */
+    padding: 10px; /* Отступы */
+    background-color: #007bff !important;  /* Синий цвет */
+    border-color: #007bff !important;
+}
+
+.btn-primary:hover {
+    background-color: white !important;  /* белый цвет при наведении */
+    border-color: #007bff !important;
+    color: #007bff !important;  /* Белый текст при наведении */
+}
+
+/* Стили для кнопки .btn-warning */
+.btn-warning {
+    font-size: 1.2rem; /* Размер шрифта */
+    padding: 10px; /* Отступы */
+    background-color: #ffc107 !important;  /* Желтый цвет */
+    border-color: #ffc107 !important;  /* Желтая граница */
+    color: black !important;  /* Белый цвет текста */
+    transition: all 0.3s ease-in-out !important;  /* Плавный переход */
+}
+
+.btn-warning:hover {
+    background-color: black !important;  /* Белый фон при наведении */
+    border-color: #ffc107 !important;  /* Желтая граница при наведении */
+    color: #ffc107 !important;  /* Желтый текст при наведении */
+}
+
+/* Стили для кнопки .btn-danger */
+.btn-danger {
+    font-size: 1.2rem; /* Размер шрифта */
+    padding: 10px; /* Отступы */
+    background-color: #dc3545 !important;  /* Красный цвет */
+    border-color: #dc3545 !important;  /* Красная граница */
+    color: white !important;  /* Белый цвет текста */
+    transition: all 0.3s ease-in-out !important;  /* Плавный переход */
+}
+
+.btn-danger:hover {
+    background-color: white !important;  /* Белый фон при наведении */
+    border-color: #dc3545 !important;  /* Красная граница при наведении */
+    color: #dc3545 !important;  /* Красный текст при наведении */
+}
+
+
+
+
+
+/* Фиксированная форма логина */
+.container-fluid {
+    position: fixed;
+    top: 1;  /* Нужно установить значение top для фиксированного положения */
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;  /* Изменяем на flex-start для расположения формы сверху */
+    height: 100vh;
+}
+
+/* Стили для карточки */
+.card {
+    width: 100%;
+    max-width: 400px; /* Максимальная ширина карточки */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+
+
+
+
+
+
+/* Стили для текста */
+.card-body {
+    text-align: center;
+    padding: 15px;
+}
+
+/* Адаптивность */
+@media (max-width: 576px) {
+    .card {
+        max-width: 90%;
+    }
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;  /* Панель должна быть выше контента */
+    background-color: #ffffff;  /* Белый фон, чтобы скрывать другие элементы при прокрутке */
+}
+
+/* Отступ от верхней части экрана, чтобы контент не перекрывался */
+body {
+    padding-top: 70px;  /* Это значение можно настроить в зависимости от высоты панели */
+}
+
+/* Стили для светлой и тёмной темы */
+[data-bs-theme="light"] {
+    --text-color: #212529;
+    --background-color: #ffffff;
+    --footer-text-color: #212529;  /* Светлый текст футера */
+}
+
+[data-bs-theme="dark"] {
+    --text-color: #ffffff;
+    --background-color: #121212;
+    --footer-text-color: #ffffff;  /* Тёмный текст футера */
+}
+
+/* Основной фон и цвет текста */
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+footer {
+    color: var(--footer-text-color);
+}
+
+footer a {
+    color: var(--footer-text-color);
+}
+
+footer a:hover {
+    color: var(--footer-text-color);
+}
+
+body {
+    background-image: url('/static/images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 1rem 0;
+}
+
+.card:hover {
+    transform: scale(1.05);  /* Эффект увеличения при наведении */
+}
+
+/* Плейсхолдер для изображений */
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+}
+
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+
+.bd-mode-toggle {
+    z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+    display: block !important;
+}
+
+
+
+
+
+    </style>
+
+
+
 
 
     </head>
@@ -163,11 +412,13 @@
 
   <main>
 
-    <section class="py-5 text-center container">
+
+<section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Личный дневник</h1>
-          <p class="lead text-body-secondary">МАП</p>
+          <p class="lead text-body-secondary fw-bold">"Место для идей, воспоминаний и планов"</p> <!-- Станет жирным -->
+            <p class="lead text-body-secondary fw-bold">"Ваши записи - ваш путь"</p>
           <p>
             {% if user.is_authenticated %}
             <a class="btn btn-outline-primary" href="{% url 'diary:entry_create' %}" role="button">Создать запись</a>
@@ -178,22 +429,43 @@
     </section>
 
 
+
+
+
   {% block content %}
   {% endblock %}
 
 
   </main>
 
-  <footer class="text-body-secondary py-5">
-    <div class="container">
-      <p class="float-end mb-1">
-        <a href="{% url 'diary:entry_list' %}">назад в меню</a>
-      </p>
-      <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-      <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
-    </div>
-  </footer>
-  <script src="{% static 'js/bootstrap.bundle.min.js'%}" ></script>
+<footer class="text-body-secondary py-5">
+  <div class="container">
+    <p class="float-end mb-1">
+      <a href="{% url 'diary:entry_list' %}">назад в меню</a>
+    </p>
+    <p class="mb-1"> &copy;  Skypro </p>
+    <p class="mb-0">Хочешь научиться веб дизайну? <a href="https://sky.pro/courses#menuopen">Поступай</a> и <a href="https://sky.pro/about">о Skypro</a>.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.dropdown-item').forEach(button => {
+    button.addEventListener('click', function() {
+      const themeValue = this.getAttribute('data-bs-theme-value');
+      // Убедитесь, что атрибут корректно устанавливается на body
+      document.body.setAttribute('data-bs-theme', themeValue);
+
+      // Для активации темы в меню
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.classList.remove('active');  // Убираем активный класс
+      });
+      this.classList.add('active');  // Добавляем активный класс к выбранной кнопке
+    });
+  });
+</script>
+
+<script src="{% static 'js/bootstrap.bundle.min.js'%}" ></script>
+
 
       </body>
   </html>

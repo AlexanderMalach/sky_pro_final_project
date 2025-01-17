@@ -109,7 +109,8 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = (BASE_DIR / "static",)
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -132,8 +133,7 @@ EMAIL_USE_SSL = config("EMAIL_USE_SSL", False) == "True"
 
 LOGIN_URL = '/accounts/login/'  # URL для перенаправления неаутентифицированных пользователей
 LOGIN_REDIRECT_URL = '/'       # URL для перенаправления после успешного входа
-LOGOUT_REDIRECT_URL = '/'      # URL для перенаправления после выхода
 
-# Настройка почтового backend для тестирования
-EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+# # Настройка почтового backend для тестирования
+# EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 

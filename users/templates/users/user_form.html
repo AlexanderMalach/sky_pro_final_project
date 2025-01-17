@@ -1,18 +1,25 @@
 {% extends 'diary/base.html' %}
 {% block content %}
-<div class="container">
-    <form class="row" method="post" enctype="multipart/form-data">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    {% csrf_token %}
-                    {{ form.as_p }}
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-5 col-lg-5"> <!-- Увеличиваем ширину карточки -->
+            <div class="card shadow-sm border-light rounded-3" style="position: fixed; top: 60%; left: 50%; transform: translate(-50%, -50%); max-width: 700px;">
+                <div class="card-header text-center">
+                    <h4 class="fw-bold">Регистрация</h4>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    Зарегистрироваться
-                </button>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill" style="width: 220px;"> <!-- Устанавливаем фиксированную ширину кнопки -->
+                                Зарегистрироваться
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

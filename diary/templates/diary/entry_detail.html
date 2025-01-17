@@ -3,24 +3,43 @@
 
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
-  <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col">
-        <div class="card shadow-sm h-100 border-0">
-          {% if object.image %}
-            <img src="{{ object.image | media_filter }}" class="card-img-top" style="max-height: 300px; object-fit: cover; border-radius: 8px;">
-          {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ object.title }}</h5>
-            <p class="card-text">{{ object.content }}</p>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <a class="btn btn-outline-primary" href="{% url 'diary:entry_list' %}" role="button">Назад</a>
-              <small class="text-body-secondary">Создано: {{ object.created_at }}</small>
+    <div class="container d-flex justify-content-center" style="min-height: 100vh; padding-top: 50px;">
+        <div class="row w-100 justify-content-center">
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="card shadow-lg border-0 d-flex flex-column">
+                    {% if object.image %}
+                    <img src="{{ object.image | media_filter }}" class="card-img-top full-card-image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ object.title }}</h5>
+                        <p class="card-text">{{ object.content }}</p>
+
+                        <!-- Информация о создании записи -->
+                        <small class="text-body-secondary mt-2 d-block text-center">Создано: {{ object.created_at}}</small>
+                    </div>
+
+                    <!-- Блок с кнопками внизу -->
+                    <div class="card-footer d-flex flex-column">
+                        <!-- Кнопка Назад на всю ширину с одинаковой высотой -->
+                        <a class="btn btn-primary w-100 mb-2 btn-lg" href="{% url 'diary:entry_list' %}" role="button">
+                            <i class="bi bi-arrow-left"></i> Назад
+                        </a>
+
+                        <!-- Группа кнопок для редактирования и удаления с одинаковой высотой -->
+                        <div class="d-flex w-100 mb-2">
+                            <a class="btn btn-warning w-100 btn-lg" href="{% url 'diary:entry_update' object.pk %}"
+                               role="button">
+                                <i class="bi bi-pencil"></i> Редактировать
+                            </a>
+                            <a class="btn btn-danger w-100 btn-lg" href="{% url 'diary:entry_delete' object.pk %}"
+                               role="button">
+                                <i class="bi bi-trash"></i> Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

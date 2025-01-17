@@ -1,24 +1,38 @@
-{% extends 'diary/base.html'%}
+{% extends 'diary/base.html' %}
+
+{% block head %}
+  <!-- Скрипт TinyMCE с вашим API-ключом -->
+  <script src="https://cdn.tiny.cloud/1/80ofg8nn67pfl51rtodg1i7pmaappzddremjumg2708j31lj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form class="row" method="post" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        {% if object %}
-                        Сохранить
-                        {% else %}
-                        Создать
-                        {% endif %}
-                    </button>
-                </div>
-            </form>
-        </div>
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="w-auto">
+        <form method="post" enctype="multipart/form-data" class="p-4 shadow-lg rounded-4 bg-white" style="min-height: 50vh; padding-top: 20px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <!-- Инициализация TinyMCE для textarea -->
+            <script>
+                tinymce.init({
+                    selector: '#id_content',  // ID поля, которое должно быть редактируемым через TinyMCE
+                    plugins: [
+                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
+                    ],
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                });
+            </script>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg w-20" style="font-weight: bold; font-size: 1.2rem;"">
+                    {% if object %}
+                    Сохранить
+                    {% else %}
+                    Создать
+                    {% endif %}
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
