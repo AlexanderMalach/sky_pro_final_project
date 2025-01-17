@@ -17,8 +17,8 @@ diploma_desktop
 SECRET_KEY='django-insecure-%h#te=bs#x*p^5@^o*lj^1e^9bokhbl##_o(dckeh!5rvkpijw'
 DEBUG=True
 
-
-
+Dockerfile
+docker-compose.yml
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_HOST_USER=a.malakhinsky@gmail.com
