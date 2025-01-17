@@ -6,47 +6,40 @@
     <div class="container d-flex justify-content-center" style="min-height: 100vh;">
         <div class="row w-100 justify-content-center">
             <div class="col-6 col-md-6 col-lg-6">
-                <!-- Содержимое записи -->
                 <div class="card shadow-lg border-0 d-flex flex-column" style="background-color: rgba(255, 255, 255, 0.8);">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ object.title }}</h5>
                         <p class="card-text">{{ object.content }}</p>
-
-                        <!-- Информация о создании записи -->
                         <small class="text-body-secondary mt-2 d-block text-center">Создано: {{ object.created_at }}</small>
                     </div>
-
-                    <!-- Блок с кнопками внизу -->
                     <div class="card-footer d-flex flex-column">
-                        <!-- Кнопка Назад на всю ширину с одинаковой высотой -->
                         <a class="btn btn-primary w-100 mb-2 btn-lg" href="{% url 'diary:entry_list' %}" role="button">
                             <i class="bi bi-arrow-left"></i> Назад
                         </a>
-
-                        <!-- Группа кнопок для редактирования и удаления с одинаковой высотой -->
-                        <div class="d-flex w-100 mb-2">
-                            <a class="btn btn-warning w-100 btn-lg" href="{% url 'diary:entry_update' object.pk %}" role="button">
-                                <i class="bi bi-pencil"></i> Редактировать
-                            </a>
-                            <a class="btn btn-danger w-100 btn-lg" href="{% url 'diary:entry_delete' object.pk %}" role="button">
-                                <i class="bi bi-trash"></i> Удалить
-                            </a>
-                        </div>
-
-                        <!-- Ползунок для изменения масштаба -->
-                        <div class="zoom-control mt-4 text-center">
-                            <label for="zoom-slider">Изменить масштаб изображения:</label>
-                            <input type="range" min="0.5" max="3" value="1" step="0.01" id="zoom-slider" class="form-range" style="width: 100%; max-width: 400px;">
-                        </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-6 col-md-6 col-lg-6">
                 {% if object.image %}
-                <!-- Контейнер для изображения с возможностью перемещения -->
-                <div class="image-container" id="image-container" style="overflow: hidden; position: relative;">
-                    <img src="{{ object.image.url }}" class="card-img-top full-card-image" id="image-to-zoom" style="max-width: 100%; height: auto; display: block; cursor: grab; transition: transform 0.3s ease;">
+                <!-- Контейнер для изображения -->
+                <div class="image-container mb-4" id="image-container" style="position: relative; overflow: hidden; width: 100%; height: 400px; border: 1px solid #ccc;">
+                    <img src="{{ object.image.url }}" id="image-to-move" style="position: absolute; left: 0; top: 0; max-width: none; cursor: grab;">
+                </div>
+
+                <!-- Контейнер для управления -->
+                <div class="controls p-3 shadow-sm rounded bg-white">
+                    <div class="mb-3">
+                        <label for="zoom-slider" class="form-label">Масштаб:</label>
+                        <input type="range" id="zoom-slider" class="form-range" min="0.5" max="3" value="1" step="0.1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="x-slider" class="form-label">Горизонтальное перемещение:</label>
+                        <input type="range" id="x-slider" class="form-range" min="-200" max="200" value="0" step="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="y-slider" class="form-label">Вертикальное перемещение:</label>
+                        <input type="range" id="y-slider" class="form-range" min="-200" max="200" value="0" step="1">
+                    </div>
                 </div>
                 {% endif %}
             </div>
@@ -55,45 +48,27 @@
 </div>
 
 <script>
+    const image = document.getElementById('image-to-move');
     const zoomSlider = document.getElementById('zoom-slider');
-    const image = document.getElementById('image-to-zoom');
-    const container = document.getElementById('image-container');
+    const xSlider = document.getElementById('x-slider');
+    const ySlider = document.getElementById('y-slider');
 
-    let isDragging = false;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    // Изменение масштаба изображения
+    // Масштабирование изображения
     zoomSlider.addEventListener('input', function () {
-        const zoomLevel = zoomSlider.value;
-        image.style.transform = `scale(${zoomLevel})`;
-
-        // Меняем размер контейнера, чтобы он соответствовал масштабу
-        container.style.width = `${zoomLevel * 100}%`;
-        container.style.height = `${zoomLevel * 100}%`;
+        const scale = zoomSlider.value;
+        image.style.transform = `scale(${scale})`;
     });
 
-    // Перемещение изображения
-    image.addEventListener('mousedown', function (e) {
-        isDragging = true;
-        offsetX = e.clientX - image.offsetLeft;
-        offsetY = e.clientY - image.offsetTop;
-        image.style.cursor = 'grabbing';
+    // Перемещение изображения по горизонтали
+    xSlider.addEventListener('input', function () {
+        const xOffset = xSlider.value;
+        image.style.left = `${xOffset}px`;
     });
 
-    window.addEventListener('mousemove', function (e) {
-        if (isDragging) {
-            const left = e.clientX - offsetX;
-            const top = e.clientY - offsetY;
-            image.style.left = `${left}px`;
-            image.style.top = `${top}px`;
-        }
-    });
-
-    window.addEventListener('mouseup', function () {
-        isDragging = false;
-        image.style.cursor = 'grab';
+    // Перемещение изображения по вертикали
+    ySlider.addEventListener('input', function () {
+        const yOffset = ySlider.value;
+        image.style.top = `${yOffset}px`;
     });
 </script>
-
 {% endblock %}
