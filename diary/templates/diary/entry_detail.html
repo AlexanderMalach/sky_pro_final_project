@@ -1,21 +1,19 @@
 {% extends 'diary/base.html' %}
 {% load my_tags %}
-
+{% load static %}
 {% block content %}
-<div class="album py-5 bg-body-tertiary">
-    <div class="container d-flex justify-content-center" style="min-height: 100vh; padding-top: 50px;">
+<div class="album py-5 bg-body-tertiary" style="background-image: url('{% static 'images/22fon_detail.jpg' %}'); background-size: cover; background-attachment: fixed; background-position: center;">
+    <div class="container d-flex justify-content-center" style="min-height: 100vh;">
         <div class="row w-100 justify-content-center">
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="card shadow-lg border-0 d-flex flex-column">
-                    {% if object.image %}
-                    <img src="{{ object.image | media_filter }}" class="card-img-top full-card-image">
-                    {% endif %}
+            <div class="col-6 col-md-6 col-lg-6">
+                <!-- Содержимое записи -->
+                <div class="card shadow-lg border-0 d-flex flex-column" style="background-color: rgba(255, 255, 255, 0.8);">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ object.title }}</h5>
                         <p class="card-text">{{ object.content }}</p>
 
                         <!-- Информация о создании записи -->
-                        <small class="text-body-secondary mt-2 d-block text-center">Создано: {{ object.created_at}}</small>
+                        <small class="text-body-secondary mt-2 d-block text-center">Создано: {{ object.created_at }}</small>
                     </div>
 
                     <!-- Блок с кнопками внизу -->
@@ -27,19 +25,75 @@
 
                         <!-- Группа кнопок для редактирования и удаления с одинаковой высотой -->
                         <div class="d-flex w-100 mb-2">
-                            <a class="btn btn-warning w-100 btn-lg" href="{% url 'diary:entry_update' object.pk %}"
-                               role="button">
+                            <a class="btn btn-warning w-100 btn-lg" href="{% url 'diary:entry_update' object.pk %}" role="button">
                                 <i class="bi bi-pencil"></i> Редактировать
                             </a>
-                            <a class="btn btn-danger w-100 btn-lg" href="{% url 'diary:entry_delete' object.pk %}"
-                               role="button">
+                            <a class="btn btn-danger w-100 btn-lg" href="{% url 'diary:entry_delete' object.pk %}" role="button">
                                 <i class="bi bi-trash"></i> Удалить
                             </a>
+                        </div>
+
+                        <!-- Ползунок для изменения масштаба -->
+                        <div class="zoom-control mt-4 text-center">
+                            <label for="zoom-slider">Изменить масштаб изображения:</label>
+                            <input type="range" min="0.5" max="3" value="1" step="0.01" id="zoom-slider" class="form-range" style="width: 100%; max-width: 400px;">
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-6 col-md-6 col-lg-6">
+                {% if object.image %}
+                <!-- Контейнер для изображения с возможностью перемещения -->
+                <div class="image-container" id="image-container" style="overflow: hidden; position: relative;">
+                    <img src="{{ object.image.url }}" class="card-img-top full-card-image" id="image-to-zoom" style="max-width: 100%; height: auto; display: block; cursor: grab; transition: transform 0.3s ease;">
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    const zoomSlider = document.getElementById('zoom-slider');
+    const image = document.getElementById('image-to-zoom');
+    const container = document.getElementById('image-container');
+
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    // Изменение масштаба изображения
+    zoomSlider.addEventListener('input', function () {
+        const zoomLevel = zoomSlider.value;
+        image.style.transform = `scale(${zoomLevel})`;
+
+        // Меняем размер контейнера, чтобы он соответствовал масштабу
+        container.style.width = `${zoomLevel * 100}%`;
+        container.style.height = `${zoomLevel * 100}%`;
+    });
+
+    // Перемещение изображения
+    image.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        offsetX = e.clientX - image.offsetLeft;
+        offsetY = e.clientY - image.offsetTop;
+        image.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', function (e) {
+        if (isDragging) {
+            const left = e.clientX - offsetX;
+            const top = e.clientY - offsetY;
+            image.style.left = `${left}px`;
+            image.style.top = `${top}px`;
+        }
+    });
+
+    window.addEventListener('mouseup', function () {
+        isDragging = false;
+        image.style.cursor = 'grab';
+    });
+</script>
+
 {% endblock %}

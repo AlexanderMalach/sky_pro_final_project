@@ -1,0 +1,265 @@
+  /* Обновляем стили шрифта */
+.btn {
+    font-family: 'Arial', sans-serif !important;  /* Простой шрифт */
+    font-size: 18px !important;
+    line-height: 1.5 !important;  /* Подгонка межстрочного интервала */
+    text-transform: none !important;  /* Убираем заглавные буквы, если это необходимо */
+    align-items: center !important; /* Вертикальное выравнивание по центру */
+    padding: 10px 20px !important; /* Корректируем отступы для кнопок *
+    isplay: inline-flex !important; /* Используем flexbox для вертикального выравнивания */
+    align-items: center !important; /* Вертикальное выравнивание по центру */
+    justify-content: center !important; /* Горизонтальное выравнивание по центру */
+    line-height: 1 !important; /* Устанавливаем line-height для правильного вертикального выравнивания */
+    font-size: calc(1rem + 1vw); /* Размер шрифта изменяется в зависимости от ширины экрана */
+    padding: calc(0.5rem + 1vw) calc(1rem + 2vw); /* Размеры отступов */
+}
+
+
+/* Основные стили для кнопок */
+.btn-outline-primary {
+    font-size: 18px !important;  /* Увеличиваем размер шрифта */
+    padding: 12px 24px !important;  /* Увеличиваем отступы для большей кнопки */
+    background-color: white !important;  /* Белый фон */
+    color: black !important;  /* Цвет текста */
+    border: 2px solid black !important;  /* Черная граница */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;  /* Центрируем текст по горизонтали и вертикали */
+    text-align: center !important;
+    border-radius: 4px !important;  /* Скругленные углы */
+    transition: all 0.3s ease-in-out !important;  /* Плавный переход */
+    z-index: 1050 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: black !important;  /* Черный фон при наведении */
+    color: white !important;  /* Белый текст при наведении */
+    border-color: white !important;  /* Белая граница при наведении */
+    transform: scale(1.05) !important;  /* Легкое увеличение при наведении */
+}
+
+
+/* Стили для основной кнопки */
+.btn-primary {
+    font-size: 1.2rem; /* Размер шрифта */
+    padding: 10px; /* Отступы */
+    background-color: #007bff !important;  /* Синий цвет */
+    border-color: #007bff !important;
+}
+
+.btn-primary:hover {
+    background-color: #32cd32 !important;  /* Салатовый цвет при наведении */
+    border-color: #32cd32 !important;
+
+}
+
+/* Фиксированная форма логина */
+.container-fluid {
+    position: fixed;
+    top: 1;  /* Нужно установить значение top для фиксированного положения */
+    left: 0;
+    right: 0;
+    z-index: 1040;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;  /* Изменяем на flex-start для расположения формы сверху */
+    height: 100vh;
+}
+
+/* Стили для карточки */
+.card {
+    width: 100%;
+    max-width: 400px; /* Максимальная ширина карточки */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-body /* Стиль для контейнера кнопок */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  /* Центрируем кнопки внутри контейнера */
+    gap: 10px;  /* Добавляем промежутки между кнопками */
+    width: 100%;
+}
+
+
+.card-body /* Стиль для контейнера кнопок */
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;  /* Центрируем кнопки внутри контейнера */
+    gap: 10px;  /* Добавляем промежутки между кнопками */
+    width: 100%;
+}
+
+
+/* Стили для текста */
+.card-body {
+    text-align: center;
+    padding: 15px;
+}
+
+/* Адаптивность */
+@media (max-width: 576px) {
+    .card {
+        max-width: 90%;
+    }
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;  /* Панель должна быть выше контента */
+    background-color: #ffffff;  /* Белый фон, чтобы скрывать другие элементы при прокрутке */
+}
+
+/* Отступ от верхней части экрана, чтобы контент не перекрывался */
+body {
+    padding-top: 70px;  /* Это значение можно настроить в зависимости от высоты панели */
+}
+
+/* Стили для светлой и тёмной темы */
+[data-bs-theme="light"] {
+    --text-color: #212529;
+    --background-color: #ffffff;
+    --footer-text-color: #212529;  /* Светлый текст футера */
+}
+
+[data-bs-theme="dark"] {
+    --text-color: #ffffff;
+    --background-color: #121212;
+    --footer-text-color: #ffffff;  /* Тёмный текст футера */
+}
+
+/* Основной фон и цвет текста */
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+footer {
+    color: var(--footer-text-color);
+}
+
+footer a {
+    color: var(--footer-text-color);
+}
+
+footer a:hover {
+    color: var(--footer-text-color);
+}
+
+body {
+    background-image: url('/static/images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 1rem 0;
+}
+
+.card:hover {
+    transform: scale(1.05);  /* Эффект увеличения при наведении */
+}
+
+/* Плейсхолдер для изображений */
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+}
+
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+}
+
+.nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Стили кнопок */
+.btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
+}
+
+.bd-mode-toggle {
+    z-index: 1500;
+}
+
+.bd-mode-toggle .dropdown-menu .active .bi {
+    display: block !important;
+}

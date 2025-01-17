@@ -3,6 +3,20 @@
 {% block head %}
   <!-- Скрипт TinyMCE с вашим API-ключом -->
   <script src="https://cdn.tiny.cloud/1/80ofg8nn67pfl51rtodg1i7pmaappzddremjumg2708j31lj/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+      tinymce.init({
+          selector: '#id_content',  // ID поля, которое должно быть редактируемым через TinyMCE
+          plugins: [
+              'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
+          ],
+          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+          setup: function (editor) {
+              editor.on('change', function () {
+                  editor.save();
+              });
+          },
+      });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -12,19 +26,17 @@
             {% csrf_token %}
             {{ form.as_p }}
 
-            <!-- Инициализация TinyMCE для textarea -->
             <script>
-                tinymce.init({
-                    selector: '#id_content',  // ID поля, которое должно быть редактируемым через TinyMCE
-                    plugins: [
-                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount'
-                    ],
-                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    const textarea = document.querySelector('#id_content');
+                    if (textarea.style.display === 'none') {
+                        textarea.required = false;
+                    }
                 });
             </script>
 
             <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-primary btn-lg w-20" style="font-weight: bold; font-size: 1.2rem;"">
+                <button type="submit" class="btn btn-primary btn-lg w-20" style="font-weight: bold; font-size: 1.2rem;">
                     {% if object %}
                     Сохранить
                     {% else %}
